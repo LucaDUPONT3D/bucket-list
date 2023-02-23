@@ -38,4 +38,9 @@ class WishRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function findAllOrderByDate()
+    {
+        return $this->createQueryBuilder('w')->addOrderBy('w.dateCreated', 'DESC')->getQuery()->getResult();
+    }
 }
