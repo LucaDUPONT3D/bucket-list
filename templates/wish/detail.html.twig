@@ -5,6 +5,12 @@
 {% endblock %}
 
 {% block body %}
-    <h2>Détails du souhait</h2>
+    <article>
+        <h2>Détails du souhait "{{ wish.title }}"</h2>
+        <p><b>Description : </b>{{ wish.description }}</p>
+        <p><b>Auteur : </b>{{ wish.author }}</p>
+        <p><b>Date : </b>{{ wish.dateCreated | date("d-m-Y-H-i-s") }}</p>
+    </article>
+
 {% endblock %}
 
