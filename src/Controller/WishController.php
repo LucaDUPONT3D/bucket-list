@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Wish;
 use App\Repository\WishRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,12 +21,9 @@ class WishController extends AbstractController
     }
 
     #[Route('/{id}', name: 'show' , requirements: ["id" => "\d+"])]
-    public function detail(int $id, WishRepository $wishRepository): Response
+    public function detail(Wish $id): Response
     {
-
-        $wish = $wishRepository->find($id);
-
-        return $this->render('wish/detail.html.twig',["wish"=>$wish]);
+        return $this->render('wish/detail.html.twig', ["wish"=>$id]);
     }
 
 
