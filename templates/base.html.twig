@@ -15,6 +15,14 @@
     <div class="container">
         {% include("bodyStructures/header/header.html.twig") %}
         <main>
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="flash flash-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
             {% block body %}{% endblock %}
         </main>
         {% include("bodyStructures/footer/footer.html.twig") %}

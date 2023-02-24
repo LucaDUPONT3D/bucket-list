@@ -5,8 +5,10 @@ namespace App\Entity;
 use App\Repository\WishRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: WishRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Wish
 {
     #[ORM\Id]
@@ -15,12 +17,25 @@ class Wish
     private ?int $id = null;
 
     #[ORM\Column(length: 250)]
+    #[Assert\NotBlank(message: "Please provide a title for the wish !")]
+    #[Assert\Length(
+        min: 2,
+        max: 250,
+        minMessage: "Minimum {{ limit }} characters",
+        maxMessage: "Maximum {{ limit }} characters")]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Assert\Length(max: 3000,maxMessage: "Maximum {{ limit }} characters")]
     private ?string $description = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message: "Please provide an author for the wish !")]
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+        minMessage: "Minimum {{ limit }} characters",
+        maxMessage: "Maximum {{ limit }} characters")]
     private ?string $author = null;
 
     #[ORM\Column(nullable: true)]
@@ -92,5 +107,12 @@ class Wish
         $this->dateCreated = $dateCreated;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setCreatedValue(): void
+    {
+        $this->setDateCreated(new \DateTime());
+        $this->setIsPublished(true);
     }
 }
