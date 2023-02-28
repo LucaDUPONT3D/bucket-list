@@ -38,4 +38,12 @@ class WishRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function findPublishedWishes(){
+        return $this->createQueryBuilder('w')
+            ->leftJoin('w.category', 'c')
+            ->addSelect('c')
+            ->addOrderBy('w.dateCreated', 'DESC')
+            ->getQuery()->getResult();
+    }
 }

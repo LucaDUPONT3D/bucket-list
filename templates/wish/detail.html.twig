@@ -9,6 +9,7 @@
         <h2>Détails du souhait "{{ wish.title }}"</h2>
         <p><b>Description : </b>{{ wish.description }}</p>
         <p><b>Auteur : </b>{{ wish.author }}</p>
+        <p><b>Category : </b>{{ wish.category.name }}</p>
         <p><b>Date : </b>{{ wish.dateCreated | date("d-m-Y-H-i-s") }}</p>
     </article>
 

@@ -7,6 +7,10 @@ body {
     font-family: 'Roboto', serif;
 }
 
+ul{
+    color: red;
+}
+
 .headerLink{
     display: flex;
     align-items: center;
