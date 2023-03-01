@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Wish;
 use App\Form\WishType;
 use App\Repository\WishRepository;
+use App\Utils\Censurator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,7 +30,7 @@ class WishController extends AbstractController
     }
 
     #[Route('/add', name: 'add')]
-    public function add(WishRepository $wishRepository, Request $request): Response
+    public function add(WishRepository $wishRepository, Request $request, Censurator $censurator): Response
     {
 
         $wish = new Wish();
@@ -39,6 +40,10 @@ class WishController extends AbstractController
         $wishForm->handleRequest($request);
 
         if ($wishForm->isSubmitted() && $wishForm->isValid()) {
+
+            $wish->setTitle($censurator->purify($wish->getTitle()));
+            $wish->setDescription($censurator->purify($wish->getDescription()));
+
             $wishRepository->save($wish, true);
 
             $this->addFlash('success', "Wish added !");
@@ -50,7 +55,7 @@ class WishController extends AbstractController
     }
 
     #[Route('/update/{id}', name: 'update')]
-    public function update(WishRepository $wishRepository, Request $request, Wish $id): Response
+    public function update(WishRepository $wishRepository, Request $request, Wish $id, Censurator $censurator): Response
     {
         $wish = $wishRepository->find($id->getId());
 
@@ -60,6 +65,10 @@ class WishController extends AbstractController
         $wishForm = $this->createForm(WishType::class, $wish);
         $wishForm->handleRequest($request);
         if ($wishForm->isSubmitted() && $wishForm->isValid()) {
+
+            $wish->setTitle($censurator->purify($wish->getTitle()));
+            $wish->setDescription($censurator->purify($wish->getDescription()));
+
             $wishRepository->save($wish, true);
 
             $this->addFlash('success', "Wish Updated !");

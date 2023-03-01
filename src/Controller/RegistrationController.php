@@ -86,7 +86,9 @@ class RegistrationController extends AbstractController
     {
         if ($this->getUser()) {
             $user = $this->getUser();
-            $this->sendVerifyUserMail($user);
+            if (!($user->isVerified())) {
+                $this->sendVerifyUserMail($user);
+            }
         }
         return $this->redirectToRoute('main_profile');
     }
