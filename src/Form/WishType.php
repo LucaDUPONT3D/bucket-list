@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Controller\SecurityController;
 use App\Entity\Category;
 use App\Entity\Wish;
 use App\Repository\CategoryRepository;

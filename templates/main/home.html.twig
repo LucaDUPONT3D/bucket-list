@@ -5,7 +5,9 @@ Bucket-List | Home
 {% endblock %}
 
 {% block body %}
-    <h1>Bonjour !</h1>
+    {% if app.user %}
+        <h1>Hello {{ app.user.pseudo }}</h1>
+    {% endif %}
     <img src="{{ asset('img/photofunky.gif') }}" alt="Elephant">
     <img src="{{ asset('img/1328364_cd48b.gif') }}" alt="Poupe">
     <img src="{{ asset('img/TornNegligibleAlbino-max-1mb.gif') }} " alt="Black">

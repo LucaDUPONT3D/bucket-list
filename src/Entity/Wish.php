@@ -44,7 +44,7 @@ class Wish
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateCreated = null;
 
-    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'wishes')]
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'wishes'/*, fetch: 'EAGER'*/)]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 

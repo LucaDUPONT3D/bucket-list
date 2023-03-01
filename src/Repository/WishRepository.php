@@ -39,11 +39,15 @@ class WishRepository extends ServiceEntityRepository
         }
     }
 
-    public function findPublishedWishes(){
+    public function findPublishedWishes()
+    {
         return $this->createQueryBuilder('w')
             ->leftJoin('w.category', 'c')
             ->addSelect('c')
+            ->andWhere('w.isPublished = :isPublished')
+            ->setParameter('isPublished', true)
             ->addOrderBy('w.dateCreated', 'DESC')
-            ->getQuery()->getResult();
+            ->getQuery()
+            ->getResult();
     }
 }
