@@ -33,9 +33,8 @@ class WishController extends AbstractController
     {
 
         $wish = new Wish();
+        $wish->setAuthor($this->getUser()->getUserIdentifier());
         $wishForm = $this->createForm(WishType::class, $wish);
-
-        $wishForm->get("author")->setData($this->getUser()->getUserIdentifier());
 
         $wishForm->handleRequest($request);
 
@@ -48,5 +47,25 @@ class WishController extends AbstractController
         }
 
         return $this->render('wish/add.html.twig', ['wishForm'=> $wishForm->createView()]);
+    }
+
+    #[Route('/update/{id}', name: 'update')]
+    public function update(WishRepository $wishRepository, Request $request, Wish $id): Response
+    {
+        $wish = $wishRepository->find($id->getId());
+
+        if (!$wish){
+            throw $this->createNotFoundException("Oops ! Wish not found !");
+        }
+        $wishForm = $this->createForm(WishType::class, $wish);
+        $wishForm->handleRequest($request);
+        if ($wishForm->isSubmitted() && $wishForm->isValid()) {
+            $wishRepository->save($wish, true);
+
+            $this->addFlash('success', "Wish Updated !");
+
+            return $this->redirectToRoute('wish_show', ['id' => $wish->getId()]);
+        }
+        return $this->render('wish/update.html.twig', ['wishForm'=> $wishForm->createView(), 'wish'=>$wish]);
     }
 }

@@ -5,7 +5,7 @@
 
     {% if app.user.verified %}
     {% else %}
-        <a href="{{ path('app_verify_email') }}"><b>Verify Mail</b></a>
+        <a href="{{ path('app_send_verify_user_mail') }}"><b>Verify Mail</b></a>
     {% endif %}
 {% endblock %}
 

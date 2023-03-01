@@ -12,6 +12,6 @@
         <p><b>Category : </b>{{ wish.category.name }}</p>
         <p><b>Date : </b>{{ wish.dateCreated | date("d-m-Y-H-i-s") }}</p>
     </article>
-
+    <a href="{{ path('wish_update', {'id': wish.id}) }}"><button>Update</button></a>
 {% endblock %}
 

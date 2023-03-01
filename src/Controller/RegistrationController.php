@@ -28,6 +28,10 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('main_home');
+        }
+
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -47,13 +51,7 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-                (new TemplatedEmail())
-                    ->from(new Address('bucket@list.fr', 'Bucket-List'))
-                    ->to($user->getEmail())
-                    ->subject('Please Confirm your Email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
-            );
+                $this->sendVerifyUserMail($user);
             // do anything else you need here, like send an email
 
             return $this->redirectToRoute('main_home');
@@ -81,5 +79,26 @@ class RegistrationController extends AbstractController
         $this->addFlash('success', 'Your email address has been verified.');
 
         return $this->redirectToRoute('main_home');
+    }
+
+    #[Route('/send-verify-user-mail', name: 'app_send_verify_user_mail')]
+    public function  reSendVerifyUserMail()
+    {
+        if ($this->getUser()) {
+            $user = $this->getUser();
+            $this->sendVerifyUserMail($user);
+        }
+        return $this->redirectToRoute('main_profile');
+    }
+
+    public function sendVerifyUserMail(User $user)
+    {
+        $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+            (new TemplatedEmail())
+                ->from(new Address('bucket@list.fr', 'Bucket-List'))
+                ->to($user->getEmail())
+                ->subject('Please Confirm your Email')
+                ->htmlTemplate('registration/confirmation_email.html.twig')
+        );
     }
 }
