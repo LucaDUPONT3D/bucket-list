@@ -7,7 +7,13 @@
     |
     {% if app.user %}
         {% if is_granted("ROLE_USER") %}
+            <a href="{{ path('main_profile') }}"><b>Profile</b></a>
+            |
             <a href="{{ path('wish_add') }}"><b>Add New Wish</b></a>
+            |
+        {% endif%}
+        {% if is_granted("ROLE_ADMIN") %}
+            <a href="{{ path('admin_dashboard') }}"><b>Dashboard</b></a>
             |
         {% endif%}
         <a href="{{ path('app_logout') }}"><b>Logout - {{ app.user.pseudo }}</b></a>

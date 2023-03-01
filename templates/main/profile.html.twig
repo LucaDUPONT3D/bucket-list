@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Profile</h1>
+
+    {% if app.user.verified %}
+    {% else %}
+        <a href="{{ path('app_verify_email') }}"><b>Verify Mail</b></a>
+    {% endif %}
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+

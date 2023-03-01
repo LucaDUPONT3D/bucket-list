@@ -19,4 +19,10 @@ class MainController extends AbstractController
     {
         return $this->render('main/about_us.html.twig');
     }
+
+    #[Route("/profile", name: 'main_profile')]
+    public function profile(): Response
+    {
+        return $this->render('main/profile.html.twig');
+    }
 }
